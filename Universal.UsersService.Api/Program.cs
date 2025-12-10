@@ -1,6 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
+// Registrar configuración fuertemente tipada para JWT
+builder.Services.Configure<Universal.UsersService.Api.Infrastructure.Security.JwtSettings>(
+    builder.Configuration.GetSection(Universal.UsersService.Api.Infrastructure.Security.JwtSettings.SectionName));
+
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -17,6 +21,9 @@ builder.Services.AddScoped<Universal.UsersService.Api.Domain.Repositories.IUserR
 
 // Registro del servicio de aplicación para usuarios
 builder.Services.AddScoped<Universal.UsersService.Api.Application.Services.IUserService, Universal.UsersService.Api.Application.Services.UserService>();
+
+// Registro del servicio para generación de tokens
+builder.Services.AddScoped<Universal.UsersService.Api.Infrastructure.Security.ITokenService, Universal.UsersService.Api.Infrastructure.Security.JwtTokenService>();
 
 
 var app = builder.Build();
