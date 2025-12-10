@@ -33,6 +33,7 @@ namespace Universal.UsersService.Api.Infrastructure.Security
             var key = _jwtSettings.Key ?? throw new InvalidOperationException("JWT Key is not configured.");
             var issuer = _jwtSettings.Issuer;
             var audience = _jwtSettings.Audience;
+            //Consistencia Global y la Prevención de Errores de Desfase Horario(Timezone Skew).
             var expires = DateTime.UtcNow.AddMinutes(_jwtSettings.ExpiresInMinutes);
 
             var claims = new[]

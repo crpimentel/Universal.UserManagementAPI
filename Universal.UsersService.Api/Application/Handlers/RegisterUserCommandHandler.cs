@@ -1,34 +1,37 @@
 using System;
+using System.Threading;
 using System.Threading.Tasks;
+using MediatR;
+using Microsoft.Extensions.Configuration;
+using Universal.UsersService.Api.Application.Commands;
 using Universal.UsersService.Api.Application.DTOs;
 using Universal.UsersService.Api.Domain.Entities;
 using Universal.UsersService.Api.Domain.Repositories;
+using Universal.UsersService.Api.Infrastructure.Security;
 using BCrypt.Net;
 
-namespace Universal.UsersService.Api.Application.Services
+namespace Universal.UsersService.Api.Application.Handlers
 {
     /// <summary>
-    /// Implementación del servicio de aplicación para gestión de usuarios.
+    /// Handler para procesar el registro de usuario.
     /// </summary>
-    public class UserService : IUserService
+    public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, UserCreateResponse>
     {
-
         private readonly IUserRepository _userRepository;
         private readonly IConfiguration _configuration;
-        private readonly Universal.UsersService.Api.Infrastructure.Security.ITokenService _tokenService;
+        private readonly ITokenService _tokenService;
 
-        public UserService(
+        public RegisterUserCommandHandler(
             IUserRepository userRepository,
             IConfiguration configuration,
-            Universal.UsersService.Api.Infrastructure.Security.ITokenService tokenService)
+            ITokenService tokenService)
         {
             _userRepository = userRepository;
             _configuration = configuration;
             _tokenService = tokenService;
         }
 
-
-        public async Task<UserCreateResponse> RegisterUserAsync(UserCreateRequest request)
+        public async Task<UserCreateResponse> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
         {
             // Validación de nombre
             if (string.IsNullOrWhiteSpace(request.Name))
@@ -44,7 +47,7 @@ namespace Universal.UsersService.Api.Application.Services
 
             // Validación de contraseña
             if (string.IsNullOrWhiteSpace(passwordRegex) || !System.Text.RegularExpressions.Regex.IsMatch(request.Password, passwordRegex))
-                throw new ArgumentException("La contraseña debe tener mayúsculas, minúsculas, símbolos y más de 8 caracteres.");
+                throw new ArgumentException("La contraseña debe tener números, mayúsculas, minúsculas, símbolos y más de 8 caracteres.");
 
             // Validación de unicidad de correo
             if (await _userRepository.EmailExistsAsync(request.Email))
@@ -74,13 +77,6 @@ namespace Universal.UsersService.Api.Application.Services
                 Id = user.Id,
                 Token = token
             };
-        }
-
-        public async Task<UserAuthResponse> AuthenticateUserAsync(UserAuthRequest request)
-        {
-            // Aquí se implementará la lógica de autenticación
-            // (Se completará en pasos siguientes)
-            throw new NotImplementedException();
         }
     }
 }
