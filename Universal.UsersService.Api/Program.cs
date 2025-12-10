@@ -15,6 +15,9 @@ builder.Services.AddDbContext<Universal.UsersService.Api.Infrastructure.Persiste
     options.UseInMemoryDatabase(dbName));
 builder.Services.AddScoped<Universal.UsersService.Api.Domain.Repositories.IUserRepository, Universal.UsersService.Api.Infrastructure.Persistence.UserRepository>();
 
+// Registro del servicio de aplicación para usuarios
+builder.Services.AddScoped<Universal.UsersService.Api.Application.Services.IUserService, Universal.UsersService.Api.Application.Services.UserService>();
+
 
 var app = builder.Build();
 
