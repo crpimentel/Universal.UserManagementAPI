@@ -1,0 +1,76 @@
+﻿# Build Folders
+bin/
+obj/
+**/bin/
+**/obj/
+
+# VS and Rider
+.vs/
+.vscode/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Visual Studio cache/options directory
+.vs/
+
+# ASP.NET Scaffolding
+ScaffoldingReadMe.txt
+
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Auto-generated VS files
+Generated\
+
+# NuGet
+*.nupkg
+# The packages folder can be ignored because of PackageReference
+# packages/
+
+# dotnet tool
+.dotnet/tools/
+
+# Rider
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+logs/
+*.log
+
+# Test result
+TestResults/
+*.trx
+
+# Publish folders
+publish/
+
+# Secret storage
+secrets.json
+appsettings.Secrets.json
+
+# EF Migrations
+Migrations/
+
+# JetBrains Rider
+.idea/
+
+# Coverage
+.coverage
+coverage.opencover.xml
+coverage.cobertura.xml
+*.coverage
+*.xml
+
+# Others
+*.db
+*.sqlite
