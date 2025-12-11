@@ -5,6 +5,8 @@ using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using System.Text.Json;
+using Universal.UsersService.Api.Infrastructure.Gateways;
+using Polly.CircuitBreaker;
 
 namespace Universal.UsersService.Api.API.Middleware
 {
@@ -43,6 +45,27 @@ namespace Universal.UsersService.Api.API.Middleware
                         problemDetails.Errors.Add(error.PropertyName, new[] { error.ErrorMessage });
                 }
                 await context.Response.WriteAsync(JsonSerializer.Serialize(problemDetails));
+            }
+            catch (ExternalApiTimeoutException ex)
+            {
+                context.Response.StatusCode = StatusCodes.Status503ServiceUnavailable;
+                context.Response.ContentType = "application/json";
+                var response = new { error = ex.Message };
+                await context.Response.WriteAsync(JsonSerializer.Serialize(response));
+            }
+            catch (ExternalApiException ex)
+            {
+                context.Response.StatusCode = StatusCodes.Status502BadGateway;
+                context.Response.ContentType = "application/json";
+                var response = new { error = ex.Message };
+                await context.Response.WriteAsync(JsonSerializer.Serialize(response));
+            }
+            catch (BrokenCircuitException ex)
+            {
+                context.Response.StatusCode = StatusCodes.Status503ServiceUnavailable;
+                context.Response.ContentType = "application/json";
+                var response = new { error = "El servicio externo no está disponible temporalmente (circuit breaker activado)." };
+                await context.Response.WriteAsync(JsonSerializer.Serialize(response));
             }
             catch (Exception ex)
             {

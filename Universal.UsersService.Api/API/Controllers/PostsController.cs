@@ -31,6 +31,8 @@ namespace Universal.UsersService.Api.API.Controllers
         [ProducesResponseType(typeof(ValidationProblemDetails), 400)]
         [ProducesResponseType(401)]
         [ProducesResponseType(500)]
+        [ProducesResponseType(502)]
+        [ProducesResponseType(503)]
         public async Task<IActionResult> Get(CancellationToken cancellationToken)
         {
             var result = await _mediator.Send(new GetExternalPostsQuery(), cancellationToken);
@@ -47,6 +49,8 @@ namespace Universal.UsersService.Api.API.Controllers
         [ProducesResponseType(typeof(ValidationProblemDetails), 400)]
         [ProducesResponseType(401)]
         [ProducesResponseType(500)]
+        [ProducesResponseType(502)]
+        [ProducesResponseType(503)]
         public async Task<IActionResult> Create([FromBody] PostCreateRequestDto request, CancellationToken cancellationToken)
         {
             var command = new CreateExternalPostCommand { Post = request };

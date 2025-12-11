@@ -18,48 +18,42 @@ namespace Universal.UsersService.Api.API.Controllers
         }
 
         /// <summary>
-        /// Endpoint para registrar un nuevo usuario.
+        /// Registra un nuevo usuario en el sistema.
+        /// Valida nombre, email y contraseña. Retorna el usuario creado y un JWT si es exitoso.
         /// </summary>
         [HttpPost("register")]
+        [ProducesResponseType(typeof(UserCreateResponse), 201)]
+        [ProducesResponseType(typeof(ValidationProblemDetails), 400)]
+        [ProducesResponseType(500)]
         public async Task<IActionResult> Register([FromBody] UserCreateRequest request)
         {
-            try
+            var command = new RegisterUserCommand
             {
-                var command = new RegisterUserCommand
-                {
-                    Name = request.Name,
-                    Email = request.Email,
-                    Password = request.Password
-                };
-                var result = await _mediator.Send(command);
-                return Ok(result);
-            }
-            catch (ArgumentException ex)
-            {
-                return BadRequest(new { error = ex.Message });
-            }
+                Name = request.Name,
+                Email = request.Email,
+                Password = request.Password
+            };
+            var result = await _mediator.Send(command);
+            return StatusCode(201, result);
         }
 
         /// <summary>
-        /// Endpoint para autenticar un usuario.
+        /// Autentica un usuario y retorna un JWT si las credenciales son válidas.
         /// </summary>
         [HttpPost("authenticate")]
+        [ProducesResponseType(typeof(UserAuthResponse), 200)]
+        [ProducesResponseType(typeof(ValidationProblemDetails), 400)]
+        [ProducesResponseType(401)]
+        [ProducesResponseType(500)]
         public async Task<IActionResult> Authenticate([FromBody] UserAuthRequest request)
         {
-            try
+            var query = new AuthenticateUserQuery
             {
-                var query = new AuthenticateUserQuery
-                {
-                    Email = request.Email,
-                    Password = request.Password
-                };
-                var result = await _mediator.Send(query);
-                return Ok(result);
-            }
-            catch (ArgumentException ex)
-            {
-                return BadRequest(new { error = ex.Message });
-            }
+                Email = request.Email,
+                Password = request.Password
+            };
+            var result = await _mediator.Send(query);
+            return Ok(result);
         }
     }
 }
