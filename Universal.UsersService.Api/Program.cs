@@ -4,6 +4,7 @@ using Universal.UsersService.Api.Infrastructure.Security;
 using FluentValidation;
 using MediatR;
 using Polly.Extensions.Http;
+using Polly;
 var builder = WebApplication.CreateBuilder(args);
 
 // 1. Registrar la clase de configuración
@@ -43,14 +44,20 @@ builder.Services.AddScoped<Universal.UsersService.Api.Domain.Repositories.IUserR
 
 
 // Configurar HttpClientFactory con Polly para resiliencia y timeout
-builder.Services.AddHttpClient<Universal.UsersService.Api.Application.Gateways.IExternalPostGateway, Universal.UsersService.Api.Infrastructure.Gateways.ExternalPostGateway>()
-    .SetHandlerLifetime(TimeSpan.FromMinutes(5))
-    .AddTransientHttpErrorPolicy(policy => policy.WaitAndRetryAsync(3, retry => TimeSpan.FromSeconds(Math.Pow(2, retry))))
-    .AddTransientHttpErrorPolicy(policy => policy.CircuitBreakerAsync(2, TimeSpan.FromSeconds(30)))
-    .ConfigureHttpClient(client =>
+builder.Services.AddHttpClient<Universal.UsersService.Api.Application.Gateways.IExternalPostGateway, Universal.UsersService.Api.Infrastructure.Gateways.ExternalPostGateway>(
+    (serviceProvider, client) =>
     {
+        var config = serviceProvider.GetRequiredService<IConfiguration>();
+        client.BaseAddress = new Uri(config["ExternalApi:BaseUrl"] ?? "https://jsonplaceholder.typicode.com");
         client.Timeout = TimeSpan.FromSeconds(10); // Timeout estricto
-    });
+    })
+    .SetHandlerLifetime(TimeSpan.FromMinutes(5))
+    .AddPolicyHandler(Polly.Extensions.Http.HttpPolicyExtensions
+        .HandleTransientHttpError()
+        .WaitAndRetryAsync(3, retry => TimeSpan.FromSeconds(Math.Pow(2, retry))))
+    .AddPolicyHandler(Polly.Extensions.Http.HttpPolicyExtensions
+        .HandleTransientHttpError()
+        .CircuitBreakerAsync(2, TimeSpan.FromSeconds(30)));
 
 
 

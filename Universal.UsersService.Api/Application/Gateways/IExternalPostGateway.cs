@@ -7,7 +7,7 @@ namespace Universal.UsersService.Api.Application.Gateways
 {
     public interface IExternalPostGateway
     {
-        Task<List<ExternalPostDto>> GetPostsAsync();
-        Task<ExternalPostDto> CreatePostAsync(ExternalPostCreateDto postDto);
+        Task<List<ExternalPostDto>> GetPostsAsync(System.Threading.CancellationToken cancellationToken = default);
+        Task<ExternalPostDto> CreatePostAsync(ExternalPostCreateDto postDto, System.Threading.CancellationToken cancellationToken = default);
     }
 }
