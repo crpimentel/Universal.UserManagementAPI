@@ -3,6 +3,7 @@ using Universal.UsersService.Api.Domain.Entities;
 using Universal.UsersService.Api.Infrastructure.Security;
 using FluentValidation;
 using MediatR;
+using Polly.Extensions.Http;
 var builder = WebApplication.CreateBuilder(args);
 
 // 1. Registrar la clase de configuración
@@ -40,8 +41,16 @@ builder.Services.AddScoped<Universal.UsersService.Api.Domain.Repositories.IUserR
 
 // Registro del servicio de aplicación para usuarios
 
-// Registro del servicio para generación de tokens
-builder.Services.AddScoped<Universal.UsersService.Api.Infrastructure.Security.ITokenService, Universal.UsersService.Api.Infrastructure.Security.JwtTokenService>();
+
+// Configurar HttpClientFactory con Polly para resiliencia y timeout
+builder.Services.AddHttpClient<Universal.UsersService.Api.Application.Gateways.IExternalPostGateway, Universal.UsersService.Api.Infrastructure.Gateways.ExternalPostGateway>()
+    .SetHandlerLifetime(TimeSpan.FromMinutes(5))
+    .AddTransientHttpErrorPolicy(policy => policy.WaitAndRetryAsync(3, retry => TimeSpan.FromSeconds(Math.Pow(2, retry))))
+    .AddTransientHttpErrorPolicy(policy => policy.CircuitBreakerAsync(2, TimeSpan.FromSeconds(30)))
+    .ConfigureHttpClient(client =>
+    {
+        client.Timeout = TimeSpan.FromSeconds(10); // Timeout estricto
+    });
 
 
 
