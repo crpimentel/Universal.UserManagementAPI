@@ -47,7 +47,7 @@ namespace Universal.UsersService.Api.Application.Handlers
 
             // Validación de contraseña
             if (string.IsNullOrWhiteSpace(passwordRegex) || !System.Text.RegularExpressions.Regex.IsMatch(request.Password, passwordRegex))
-                throw new ArgumentException("La contraseña debe tener números, mayúsculas, minúsculas, símbolos y más de 8 caracteres.");
+                throw new ArgumentException("La contraseña debe tener  mayúsculas, minúsculas, símbolos y más de 8 caracteres.");
 
             // Validación de unicidad de correo
             if (await _userRepository.EmailExistsAsync(request.Email))

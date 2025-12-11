@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.13.35931.197 d17.13
+VisualStudioVersion = 17.13.35931.197
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Universal.UsersService.Api", "Universal.UsersService.Api\Universal.UsersService.Api.csproj", "{1E0ED3BA-FFAA-4E1B-BF3F-0F6DD5EA9025}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Universal.UsersService.Tests", "Universal.UsersService.Tests\Universal.UsersService.Tests.csproj", "{35E1E9A0-8F93-67EC-89FD-5F7F3FBFA799}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{1E0ED3BA-FFAA-4E1B-BF3F-0F6DD5EA9025}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1E0ED3BA-FFAA-4E1B-BF3F-0F6DD5EA9025}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1E0ED3BA-FFAA-4E1B-BF3F-0F6DD5EA9025}.Release|Any CPU.Build.0 = Release|Any CPU
+		{35E1E9A0-8F93-67EC-89FD-5F7F3FBFA799}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{35E1E9A0-8F93-67EC-89FD-5F7F3FBFA799}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{35E1E9A0-8F93-67EC-89FD-5F7F3FBFA799}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{35E1E9A0-8F93-67EC-89FD-5F7F3FBFA799}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

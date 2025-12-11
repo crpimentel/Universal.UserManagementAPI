@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Universal.UsersService.Api.Domain.Entities;
 using Universal.UsersService.Api.Infrastructure.Security;
+using FluentValidation;
+using MediatR;
 var builder = WebApplication.CreateBuilder(args);
 
 // 1. Registrar la clase de configuración
@@ -10,6 +12,13 @@ builder.Services.Configure<Universal.UsersService.Api.Infrastructure.Security.Jw
     builder.Configuration.GetSection(Universal.UsersService.Api.Infrastructure.Security.JwtSettings.SectionName));
 
 // Add services to the container.
+
+
+// Registrar FluentValidation y los validadores
+builder.Services.AddValidatorsFromAssembly(typeof(Universal.UsersService.Api.Application.Commands.RegisterUserCommand).Assembly);
+
+// Registrar Pipeline Behavior para validación con MediatR
+builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(Universal.UsersService.Api.Application.Behaviors.ValidationBehavior<,>));
 
 // Registro de MediatR para CQRS
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Universal.UsersService.Api.Application.Commands.RegisterUserCommand).Assembly));
@@ -35,7 +44,11 @@ builder.Services.AddScoped<Universal.UsersService.Api.Domain.Repositories.IUserR
 builder.Services.AddScoped<Universal.UsersService.Api.Infrastructure.Security.ITokenService, Universal.UsersService.Api.Infrastructure.Security.JwtTokenService>();
 
 
+
 var app = builder.Build();
+
+// Middleware de manejo global de excepciones
+app.UseMiddleware<Universal.UsersService.Api.API.Middleware.GlobalExceptionHandlerMiddleware>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
