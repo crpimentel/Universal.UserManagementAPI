@@ -1,5 +1,11 @@
 # Universal.UserManagementAPI
 
+Arquitectura el proyecto , la arquitectura del proyecto sera monolotica por las siguientes razones:
+1.Es una prueba técnica:  no sera puesto en funcionamiento para un entorno real de producción.
+2.Simplicidad:	Es un proyecto nuevo  con un solo desarrollador.
+3.Costo y Velocidad:	Necesidad de desplegar rápidamente, bajo costo de infraestructura (menos servidores/contenedores).
+4.Transacciones Simples
+
 Servicio de gestión de usuarios para Grupo Universal — Prueba técnica .NET
 
 ## Objetivo
