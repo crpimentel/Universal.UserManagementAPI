@@ -28,9 +28,21 @@ namespace Universal.UsersService.Api.API.Middleware
             catch (ValidationException ex)
             {
                 context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                context.Response.ContentType = "application/json";
-                var response = new { error = ex.Message };
-                await context.Response.WriteAsync(JsonSerializer.Serialize(response));
+                context.Response.ContentType = "application/problem+json";
+                var problemDetails = new Microsoft.AspNetCore.Mvc.ValidationProblemDetails
+                {
+                    Status = (int)HttpStatusCode.BadRequest,
+                    Title = "One or more validation errors occurred.",
+                    Detail = ex.Message,
+                    Instance = context.Request.Path
+                };
+                // Opcional: agregar los errores individuales si están disponibles
+                foreach (var error in ex.Errors)
+                {
+                    if (!problemDetails.Errors.ContainsKey(error.PropertyName))
+                        problemDetails.Errors.Add(error.PropertyName, new[] { error.ErrorMessage });
+                }
+                await context.Response.WriteAsync(JsonSerializer.Serialize(problemDetails));
             }
             catch (Exception ex)
             {
