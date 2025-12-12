@@ -26,7 +26,7 @@ El proyecto implementa Clean Architecture y CQRS con MediatR, siguiendo buenas p
 
 - Los errores de validación se retornan en formato estándar `ValidationProblemDetails` (HTTP 400)
 - Los errores inesperados se manejan globalmente y retornan mensajes genéricos (HTTP 500)
-- Los endpoints solo son accesibles para usuarios autenticados
+- Los endpoints solo son accesibles para usuarios autenticados 
 
 ## Ejemplo de uso
 
@@ -45,8 +45,9 @@ El proyecto implementa Clean Architecture y CQRS con MediatR, siguiendo buenas p
 3. Desde el branch master, creamos un branch feature/nombre-descriptivo para cada nueva funcionalidad o fix. 
 4. Realizamos commits atómicos y descriptivos en el branch feature.
 5. Al completar una funcionalidad, abrimos un Pull Request (PR) desde el branch feature al branch master.
-6. En el PR, describimos los cambios realizados no pusismos aprobadores porque era solo yo.
+6. En el PR, describimos los cambios realizados.No pusismos aprobadores porque  solo era yo.
 7. No creamos el cd porque para azure tendriamos que autenticarnos.
+8. Protegimos la rama master y cada PR debia pasar el CI
 - 
 ## Objetivo
 Implementar una API RESTful en .NET 8 que soporte:
