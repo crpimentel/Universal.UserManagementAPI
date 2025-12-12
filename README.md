@@ -1,8 +1,8 @@
 # Universal.UserManagementAPI
 
-Arquitectura el proyecto , la arquitectura del proyecto sera monolítica por las siguientes razones:
+La arquitectura del proyecto es monolítica por las siguientes razones:
 1.Es una prueba técnica:  no sera puesto en funcionamiento para un entorno real de producción.
-2.Simplicidad:	Es un proyecto nuevo  con un solo desarrollador.
+2.Simplicidad:	Es un proyecto nuevo  con un solo desarrollador no habra varias personas haciendo cambios.
 3.Costo y Velocidad:	Necesidad de desplegar rápidamente, bajo costo de infraestructura (menos servidores/contenedores).
 4.Transacciones Simples
 
