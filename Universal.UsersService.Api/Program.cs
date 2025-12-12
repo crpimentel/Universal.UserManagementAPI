@@ -5,21 +5,18 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Polly;
-using Polly.Extensions.Http;
 using System.Text;
-using Universal.UsersService.Api.Domain.Entities;
 using Universal.UsersService.Api.Infrastructure.Security;
 var builder = WebApplication.CreateBuilder(args);
 
-// 1. Registrar la clase de configuración
-builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("Jwt"));
+
 // Registrar configuración fuertemente tipada para JWT
-builder.Services.Configure<Universal.UsersService.Api.Infrastructure.Security.JwtSettings>(
-    builder.Configuration.GetSection(Universal.UsersService.Api.Infrastructure.Security.JwtSettings.SectionName));
+builder.Services.Configure<JwtSettings>(
+    builder.Configuration.GetSection(JwtSettings.SectionName));
 
 // --- PASO CLAVE: OBTENER LA CONFIGURACIÓN ANTES DE USARLA EN EL SERVICIO ---
 var jwtSettings = builder.Configuration.GetSection(JwtSettings.SectionName).Get<JwtSettings>()
-    ?? throw new InvalidOperationException("JwtSettings section falto o es inválida.");
+    ?? throw new InvalidOperationException($"La sección {nameof(JwtSettings)} no fue configurada.");
 
 // 1. Configurar Autenticación
 builder.Services.AddAuthentication(options =>

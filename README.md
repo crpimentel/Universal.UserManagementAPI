@@ -39,7 +39,15 @@ El proyecto implementa Clean Architecture y CQRS con MediatR, siguiendo buenas p
 - La arquitectura permite escalar y agregar nuevos endpoints protegidos fácilmente
 - El manejo de errores y validaciones es centralizado y profesional
 - El código sigue SOLID, es limpio y fácil de mantener
-
+## GITHUB FLOW
+1. Seguimos la metodologia propuesta para la evaluación técnica.
+2. Creamos un branch master/main limpio y funcional.
+3. Desde el branch master, creamos un branch feature/nombre-descriptivo para cada nueva funcionalidad o fix. 
+4. Realizamos commits atómicos y descriptivos en el branch feature.
+5. Al completar una funcionalidad, abrimos un Pull Request (PR) desde el branch feature al branch master.
+6. En el PR, describimos los cambios realizados no pusismos aprobadores porque era solo yo.
+7. No creamos el cd porque para azure tendriamos que autenticarnos.
+- 
 ## Objetivo
 Implementar una API RESTful en .NET 8 que soporte:
 - Registro de usuarios con validación y hashing (BCrypt).
@@ -47,6 +55,11 @@ Implementar una API RESTful en .NET 8 que soporte:
 - Endpoints protegidos que consumen una API externa (`jsonplaceholder.typicode.com`).
 - Base de datos en memoria (EF Core InMemory) durante la ejecución.
 - Buenas prácticas: Clean Architecture , DI, FluentValidation, Swagger, tests.
+- Creacion de politicas de seguridad para los endpoints.
+- Creacion de politicas retry y circuit braker para las llamadas a la api externa.
+- Documentacion clara y profesional.
+- Patrones cqrs , mediatr, api gateway y polly.
+- CQRS, Factory, y Polly
 
 ## Estructura del repositorio
 - `Universal.UserService.Api` - Capa Presentation (Web API)
@@ -68,4 +81,4 @@ Implementar una API RESTful en .NET 8 que soporte:
 ```bash
 dotnet restore
 dotnet build
-dotnet run --project Universal.UserService.Api/Universal.UserService.Api.csproj
+dotnet run --project Universal.UserService.Api/Universal.UserService.Api.csproj 
